@@ -12,21 +12,6 @@ unsigned numUsosTotales(const UsosUsuario usuario) {
 
 
 
-int buscador(string ejemplo, UsosUsuario usuarios[], unsigned numUsuarios) {
-    unsigned i = 0;
-    bool encontrado = false;
-    while(i < numUsuarios-1 && encontrado == false) {
-        if(usuarios[i].id == ejemplo) {
-            encontrado = true;
-        }
-        else {i++;}
-    }
-    if(encontrado == true) {
-        return i;
-    }
-    return -1;
-}
-
 /*
  * Pre:  «nombreFicheroUsos» contiene la ruta y nombre de un fichero de texto con información
  *       sobre usos del sistema Bizi Zaragoza y con el formato establecido en el enunciado.
@@ -68,7 +53,7 @@ bool obtenerUsosPorUsuario(const string nombreFicheroUsos,
                 i++;
             }
             if(!encontrado) {
-                usuarios[numUsuarios].id = ejemplo.id;
+                usuarios[i].id = ejemplo.id;
                 numUsuarios++;
             }
             if(estacionDejada == estacionRecogida) {
