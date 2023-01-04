@@ -47,6 +47,14 @@ unsigned indiceRangoEdad(const string rangoEdad);
  */
 int indiceGenero(const string genero);
 
+
+/*
+ * Pre:  La función recibe un nombre válido de fichero
+ *
+ * Post: La función cuenta el número de usuarios distintos que hay en el fichero que se 
+ * ha seleccionado, contando las líneas que hay ignorando la cabecera.
+ */
+unsigned usuariosDistintos (const string fichero, unsigned listaUsuarios[]);
 /*
  * Pre:  «nombreFicheroUsuarios» es el nombre de un fichero que cumple con la sintaxis de la 
  *       regla <fichero-usuarios> establecida en el enunciado.

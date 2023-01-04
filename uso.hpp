@@ -12,9 +12,9 @@
 using namespace std;
 
 struct UsoBizi {
-    unsigned userID;
-    unsigned estacionRecogida;
-    unsigned estacionDejada;
+    string userID;
+    string estacionRecogida;
+    string estacionDejada;
     bool circular;  //no se pide en la especificacion, pero nos dice si un recorrido es circular o no directamente
 };
 
@@ -43,3 +43,4 @@ bool leerUso(istream& f, UsoBizi& uso);
  *      estación.  En ese caso, devuelve «true» y en el caso contrario, «false».
  */
 bool contarUsos(const string nombreFicheroUsos, unsigned& traslados, unsigned& usosCirculares);
+

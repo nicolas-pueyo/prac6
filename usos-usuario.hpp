@@ -12,10 +12,9 @@
 using namespace std;
 
 struct UsosUsuario {
-    // Define los campos necesarios para representar los siguientes datos sobre las
-    // utilizaciones del sistema Bizi de determinado usuario: su identificador de usuario,
-    // el número de usos entre estaciones distintas realizadas por ese usuario y el número de
-    // usos entre la misma estación.
+    string id;
+    unsigned traslados;
+    unsigned circular;
 };
 
 
@@ -51,3 +50,16 @@ bool obtenerUsosPorUsuario(const string nombreFicheroUsos,
  */
 void ordenar(UsosUsuario usuarios[], const unsigned numUsuarios, 
              const unsigned numOrdenar);
+
+
+void permutar(UsosUsuario& a, UsosUsuario& b);
+
+
+/*
+ * Pre:  La función recibe un nombre válido de fichero
+ *
+ * Post: La función cuenta el número de usuarios distintos que hay en el fichero que se 
+ * ha seleccionado, contando las líneas que hay ignorando la cabecera.
+ */
+unsigned usuariosDistintos (ifstream& f, string listaUsuarios[]);
+

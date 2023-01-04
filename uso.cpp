@@ -16,13 +16,11 @@
  */
 bool leerUso(istream& f, UsoBizi& uso) {
     string linea;
-    if(f >> uso.userID) {
-        getline(f,linea,';');
+    if(getline(f,uso.userID,';')) {
         getline(f, linea, ';');
-        f >> uso.estacionRecogida;
+        getline(f,uso.estacionRecogida,';');
         getline(f, linea, ';');
-        getline(f, linea, ';');
-        f >> uso.estacionDejada;
+        getline(f,uso.estacionDejada);
         if(uso.estacionRecogida == uso.estacionDejada) {
             uso.circular = true;
         }

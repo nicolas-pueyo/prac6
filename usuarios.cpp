@@ -58,9 +58,6 @@ int indiceGenero(const string genero) {
 
 
 
-
-
-
 /*
  * Pre:  «nombreFicheroUsuarios» es el nombre de un fichero que cumple con la sintaxis de la 
  *       regla <fichero-usuarios> establecida en el enunciado. La matriz «estadisticas» tiene

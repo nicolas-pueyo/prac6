@@ -9,10 +9,13 @@
 #include <iostream>
 #include <cctype>
 #include <iomanip>
+#include <string>
 #include "nombres-ficheros.hpp"
 #include "uso.hpp"
 #include "usuarios.hpp"
+#include "usos-usuario.hpp"
 using namespace std;
+
 
 /*
 * Pre: --
@@ -65,15 +68,14 @@ string opcionElegida () {
     else {
         while (!fichero.is_open()) {
             // da un mensaje de error
-        cerr << "No se ha podido abrir el fichero " << "\"" + construirNombreFicheroUsos(opcion) + "\"" << endl << endl;
-        // vuelve a mostrar el menu, y a pedir una opcion
-        mostrarOpciones();
-        cout << "Elija una opción: ";
-        cin >> opcion;
-        ifstream fichero(construirNombreFicheroUsos(opcion));
+            cerr << "No se ha podido abrir el fichero " << "\"" + construirNombreFicheroUsos(opcion) + "\"" << endl << endl;
+            // vuelve a mostrar el menu, y a pedir una opcion
+            mostrarOpciones();
+            cout << "Elija una opción: ";
+            cin >> opcion;
+            ifstream fichero(construirNombreFicheroUsos(opcion));
         }
     }
-    
     return construirNombreFicheroUsos(opcion);
 }
 
@@ -101,11 +103,37 @@ void escribirMenuAcciones() {
         }
 }
 
+
+/*
+*Pre: "nombreFichero" es un nombre valido de fichero
+*Post: devuelve el numero de lineas de ese fichero, sin contar la inicial
+*/
+bool contarLineas(const string nombreFichero, unsigned& cuenta) {
+    ifstream f(nombreFichero);
+    if(f.is_open()) {
+    string linea;
+    cuenta = 0;
+    while(getline(f,linea)) {
+        cuenta++;
+    }
+    f.close();
+    return true;
+    }
+    else {return false;}
+}
+/*
+* Pre: --
+*
+* Post: El procedimiento se encarga de recibir la opción, tanto si tiene un solo dato como si 
+* es de las que cuentan con una segunda entrada. También transforma el primer dato recibido
+* a un formato general, para el correcto funcionamiento posterior del programa
+*/
 void elegirOrdenMenu(string& opcionMenu, unsigned& dato) {
-        for(unsigned i = 0; i < opcionMenu.length(); i++) {
+    for(unsigned i = 0; i < opcionMenu.length(); i++) {
+        // recibe el dato como un vector de chars, en vez de como string, para convertirlo a upper
         opcionMenu.at(i) = toupper(opcionMenu.at(i));
     }
-
+    // en el caso de que el primer dato sea uno de estos, habrá un segundo campo que recibir 
     if(opcionMenu == "USUARIO" || opcionMenu == "MAYORES" || opcionMenu == "INFORME") {
         cin >> dato;
     }
@@ -169,12 +197,41 @@ void ejecutarOpcionMenu(string opcion, unsigned dato, string& ficheroSel) {
             cout << "El/la usuario/a " << dato << " no aparece en el fichero \"datos/usuarios.csv\"." << endl;
         
         }
-    }
+    } 
     else if (opcion == "MAYORES") {
-        //ejecutarMAYORES(dato);
+        unsigned lineas = 0;
+        contarLineas("datos/usuarios.csv",lineas);
+        UsosUsuario usuarios[lineas];
+        for (unsigned i = 0; i < lineas-1; i++) {
+            usuarios[i].id = "";
+            usuarios[i].traslados = 0;
+            usuarios[i].circular = 0;
+        }
+        unsigned numUsuarios;
+        obtenerUsosPorUsuario(ficheroSel,usuarios, numUsuarios);
+        ordenar(usuarios, numUsuarios, dato+1);
+        ifstream f(ficheroSel);
+        f.close();
+        cout << "Numero de usuarios distintos: " << numUsuarios-1 << endl;
+        cout << right << setw(10) << "Usuario" 
+             << setw(10) << "Traslados" 
+             << setw(10) << "Circular" 
+             << setw(10) << "Total" 
+             << endl;
+        for (unsigned i = 0; i < 4; i++) {
+            cout << setw(10) << " =========";
+        }
+        cout << endl;
+        for(unsigned i = 0; i < dato; i++) {
+            cout << setw(10) << usuarios[i].id 
+                 << setw(10)<< usuarios[i].traslados 
+                 << setw(10) << usuarios[i].circular 
+                 << setw(10) << numUsosTotales(usuarios[i]) 
+                 << endl;
+        }
     }
     else if (opcion == "INFORME") {
-        //ejecutarINFORME(dato);
+        
     }
     else if (opcion == "DESTINOS") {
         //ejecutarDESTINOS(dato);
@@ -185,9 +242,6 @@ void ejecutarOpcionMenu(string opcion, unsigned dato, string& ficheroSel) {
     }
 }
 
-void ayuda() {
-    escribirMenuAcciones();
-}
 
 /*
  * Programa que se encarga de pedir al usuario el fichero con el que desea trabajar, y muestra
